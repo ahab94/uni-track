@@ -1,0 +1,7 @@
+metadata:
+  name: uni_track
+  image: hub.docker.com/ahab94/uni-track
+  import: github.com/ahab94/uni-track
+  build:
+  - target: cmd/uni-track-server
+    

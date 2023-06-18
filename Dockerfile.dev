@@ -1,0 +1,19 @@
+FROM golang:1.20
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        gettext-base \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV GO111MODULE=on
+
+RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest \
+    && go install golang.org/x/tools/cmd/goimports@latest \
+    && go install github.com/mitchellh/gox@latest \
+    && go install github.com/davecheney/godoc2md@latest \
+    && go install github.com/axw/gocov/gocov@latest \
+    && go install github.com/t-yuki/gocov-xml@latest \
+    && go install github.com/tebeka/go2xunit@latest
+
+RUN CGO_ENABLED=0
+
+ARG DEVELOPER

@@ -1,0 +1,21 @@
+PROJECT_FILE = project.yml
+export PROJECT = $(shell awk '/name: / { print $$2; exit }' ${PROJECT_FILE})
+export IMAGE_NAME = $(shell awk '/image: / { print $$2; exit }' ${PROJECT_FILE})
+IMPORT_PATH = $(shell awk '/import: / { print $$2; exit }' ${PROJECT_FILE})
+
+ROOT := $(shell pwd)
+
+DEV_IMAGE := ${PROJECT}_dev
+
+DOCKER := docker run --rm \
+	-e PROJECT_FILE="${PROJECT_FILE}" \
+	-v ${ROOT}:/${PROJECT}/src/${IMPORT_PATH} \
+	-w /${PROJECT}/src/${IMPORT_PATH} \
+	${DEV_IMAGE}
+
+DOCKERTEST := docker run --rm \
+	-e PROJECT_FILE="${PROJECT_FILE}" \
+	-v ${ROOT}:/${PROJECT}/src/${IMPORT_PATH} \
+	-w /${PROJECT}/src/${IMPORT_PATH} \
+	--link="cassandra-db-cnt:cassandra-db" \
+	${DEV_IMAGE}

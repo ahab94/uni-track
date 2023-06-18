@@ -1,0 +1,3 @@
+#!/bin/bash
+
+go test -mod=vendor -v -bench -coverpkg=all ./...
